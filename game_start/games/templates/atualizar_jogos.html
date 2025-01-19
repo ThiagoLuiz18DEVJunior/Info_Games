@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %} Atualizar Jogos {% endblock %}
+{% block content %}
+<h2>Atualizar Jogo</h2>
+<form method="post">
+ {% csrf_token %}
+ {{form.as_p}}
+ <button type="submit">Salvar Alterações</button>
+</form>
+{% endblock %}

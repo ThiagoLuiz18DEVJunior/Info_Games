@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Cadastro de Jogos {% endblock %}</title>
+    {% load static %}
+    <link href="{%static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+<header class="bg-primary text-white p-2">
+    <div class="container">
+        <h1>  <a href="{% url 'home' %}" class="text-white">Controle de Dados</a> </h1>
+        {% if var_keys.0 %}
+            <nav>
+                <a href="{% url 'listar_jogos' %}" class="text-white">Listar Jogos</a>
+                <a href="{% url 'adicionar_jogos' %}" class="text-white">Adicionar Jogos</a>
+                <a href="{% url 'atualizar_jogos' 2 %}" class="text-white">Editar Jogos</a>
+                <a href="{% url 'detalhar_jogos' 2 %}" class="text-white">Detalhe do Jogo</a>
+            </nav>
+    
+        {% elif var_keys.1 %}
+            <nav>
+                <a href="{% url 'listar_empresas' %}" class="text-white">Listar Empresas</a>
+                <a href="{% url 'adicionar_empresas' %}" class="text-white">Adicionar Empresa</a>
+                <a href="{% url 'atualizar_empresas' 1 %}" class="text-white">Editar Empresa</a>
+                <a href="{% url 'detalhar_empresas' 1 %}" class="text-white">Detalhe da Empresa</a>
+            </nav>
+    
+        {% elif var_keys.2 %}
+            <nav>
+                <a href="{% url 'listar_pubs' %}" class="text-white">Listar Publishers</a>
+                <a href="{% url 'adicionar_publisher' %}" class="text-white">Adicionar Publisher</a>
+                <a href="{% url 'atualizar_publisher' 1 %}" class="text-white">Editar Publisher</a>
+                <a href="{% url 'detalhar_publisher' 1 %}" class="text-white">Detalhe da Publisher</a>
+            </nav>
+    
+        {% elif var_keys.3 %}
+            <nav>
+                <a href="{% url 'listar_devs' %}" class="text-white">Listar Devs</a>
+                <a href="{% url 'adicionar_dev' %}" class="text-white">Adicionar dev</a>
+                <a href="{% url 'atualizar_dev' 1 %}" class="text-white">Editar dev</a>
+                <a href="{% url 'detalhar_dev' 1 %}" class="text-white">Detalhe do Dev</a>
+            </nav>
+        {% else %}
+        {% endif %}
+        </div>
+</header>
+
+<main class="container mt-4">
+    {% block content %}
+    <!-- Conteúdo específico da página -->
+    {% endblock %}
+</main>
+
+<footer class="bg-light text-center p-3 mt-4">
+ <p>&copy; 2024 Controle de DB</p>
+</footer>
+
+</body>
+</html>

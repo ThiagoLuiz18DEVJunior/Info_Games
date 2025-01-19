@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Games{% endblock %}
+{% block content %}
+
+  {% if var_keys.0 %}
+   <h2> Lista de Games </h2>
+          <ul>
+          {% for game in games %}
+            <li>
+              {{game.id}} - {{game.game_star}} - {{game.title_game}} - {{game.year_game }} - {{game.enterprise_game}} - {{game.publisher_game}} - {{game.devs_game.all}}
+              <a href="{% url 'atualizar_jogos' game.pk %}">Editar</a>
+              <a href="{% url 'excluir_jogos' game.pk %}" onclick="return confirm('Tem certeza que deseja excluir este jogo?');">Excluir</a>
+            </li>
+          {% endfor %}
+         </ul>
+  {% elif var_keys.1 %}
+  <h2> Lista de Empresas </h2>
+          <ul>
+          {% for enterprise in empresa %}
+            <li>
+              {{enterprise.id}} - {{enterprise.enterprise_name}} - {{enterprise.enterprise_year}} 
+              <a href="{% url 'atualizar_empresas' enterprise.pk %}">Editar</a>
+              <a href="{% url 'excluir_empresas' enterprise.pk %}" onclick="return confirm('Tem certeza que deseja excluir esta empresa?');">Excluir</a>
+            </li>
+          {% endfor %}
+         </ul>
+  {% elif var_keys.2 %}
+  <h2> Lista de Publishers </h2>
+          <ul> 
+          {% for publisher in publishers %}
+            <li>
+              {{publisher.id}} - {{publisher.publisher_name}} - {{publisher.publisher_year}} - {{publisher.enterprise_pub}} 
+              <a href="{% url 'atualizar_publisher' publisher.pk %}">Editar</a>
+              <a href="{% url 'excluir_publisher' publisher.pk %}" onclick="return confirm('Tem certeza que deseja excluir esta publisher?');">Excluir</a>
+            </li>
+          {% endfor %}
+         </ul>
+  {% elif var_keys.3 %}
+  <h2> Lista de Desenvolvedores </h2>
+          <ul> 
+          {% for dev in devs %}
+            <li>
+              {{dev.id}} - {{dev.dev_name}} - {{dev.dev_last_name}} - {{dev.dev_nickname}} - {{dev.dev_years}} - {{dev.enterprises.all}}
+              <a href="{% url 'atualizar_dev' dev.pk %}">Editar</a>
+              <a href="{% url 'excluir_dev' dev.pk %}" onclick="return confirm('Tem certeza que deseja excluir esta desenvolvedor?');">Excluir</a>
+            </li>
+          {% endfor %}
+         </ul>
+  {% else %}
+  {% endif %}
+{% endblock %}
+
+
+
+
