@@ -10,7 +10,7 @@ from django.forms import ValidationError
 """   
 # Banco de Dados - Plataforma de Distribuição de Jogos Eletrônicos
 # Separação do Banco - Empresa, Distribuidora, Desenvolvedores e Jogos.
-
+   
 class Enterprise (models.Model):
     enterprise_name = models.CharField(max_length=30)
     enterprise_year = models.PositiveIntegerField()
@@ -37,18 +37,18 @@ class Dev (models.Model):
       return f"{self.dev_name} {self.dev_last_name} ({self.dev_nickname})"
 
 class Game (models.Model): 
-    STAR_VALUES = [
-        (1, "MUITO RUIM"),
-        (2, "RUIM"),
-        (3, "BOM"),
-        (4, "MUITO BOM"),
-        (5, "EXCELENTE"),
-    ]
+
+    class Star_Values(models.IntegerChoices):
+       MUITO_RUIM = 1, 'MUITO RUIM'
+       RUIM = 2, 'RUIM'
+       BOM = 3, 'BOM'
+       MUITO_BOM = 4, 'MUITO BOM'
+       EXCELENTE = 5, 'EXCELENTE'
 
     publisher_game = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     enterprise_game = models.ForeignKey(Enterprise, on_delete=models.CASCADE)
     devs_game =  models.ManyToManyField(Dev)
-    game_star = models.IntegerField(choices=STAR_VALUES)
+    game_star = models.IntegerField(choices=Star_Values.choices)
     title_game = models.CharField(max_length=30)
     year_game = models.PositiveIntegerField()
 
@@ -58,8 +58,11 @@ class Game (models.Model):
             raise ValidationError(f"O ano do jogo não pode ser maior que o ano atual ({actual_year}).")
 
     def __str__(self):
-      devs_names = ", ".join(dev.dev_name for dev in self.devs_game.all())
-      return f"{self.title_game} ({self.year_game}) - {self.enterprise_game} - {self.publisher_game} - Devs: {devs_names}"
+        devs_names = ", ".join(dev.dev_name for dev in self.devs_game.all())
+        return f"{self.title_game} ({self.year_game}) - {self.enterprise_game} - {self.publisher_game} - Devs: {devs_names}"
+    
+    def get_stars(self):
+        return '★' * self.game_star + '☆' * (5 - self.game_star)
 
 # Dados Adicionados via Shell (CRUD) (comando: python manage.py shell)
 # Comandos e comentários do desenvolvedor. 

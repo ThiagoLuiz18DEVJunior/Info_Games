@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Games{% endblock %}
+{% block content %}
+
+<body>
+  <h1>Campo de Dados</h1>
+    <h2> {{ nome_tabela }} </h2>
+  <ul>
+      {% for item_data in items_with_fields %}
+          <li>
+              <ul>
+                  {% for field, value in item_data.items %}
+                     <li><strong>{{ field }}: </strong>{{ value }}</li>
+                  {% endfor %}
+              </ul>
+              <br/>
+          </li>
+      {% endfor %}
+  </ul>
+</body>
+{% endblock %}
+
+
+
+
