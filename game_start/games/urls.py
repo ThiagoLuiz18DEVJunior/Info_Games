@@ -1,8 +1,16 @@
 from django.urls import path
 from .views import *
+from .user_view import *
+from .auto_view import *
+from . import views
+
 
 urlpatterns = [
+   path('', home_page, name='home'),
+   path('register/', register, name='register'),
    path('list/', listar_dados, name="listar_dados"), 
+   path('login/', login_info_games, name='login'),
+   path('logout/', logout_info_games, name='logout'),
 
    # Path pra config de DB da Empresa
    path('empresa/adicionar/', add_emp , name='adicionar_empresas'), 
@@ -11,7 +19,7 @@ urlpatterns = [
    path('empresa/excluir/<int:pk>/', excluir_emp, name='excluir_empresas'), 
 
    # Path pra config dos Desenvolvedores
-   path('dev/adicionar/', add_dev , name='adicionar_dev'), 
+   path('dev/adicionar/', views.add_dev , name='adicionar_dev'), 
    path('dev/editar/<int:pk>/', atualizar_dev, name='atualizar_dev'), 
    path('dev/detalhar/<int:pk>/', detalhar_dev, name='detalhar_dev'), 
    path('dev/excluir/<int:pk>/', excluir_dev, name='excluir_dev'), 

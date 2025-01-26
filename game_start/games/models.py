@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import datetime
 from django.forms import ValidationError
+from django import forms
+from django.contrib.auth.models import User
 
 # Create your models here.
 # Usei a tabela abaixo de exemplo com base no material disponivel
@@ -63,6 +65,21 @@ class Game (models.Model):
     
     def get_stars(self):
         return '★' * self.game_star + '☆' * (5 - self.game_star)
+
+class UserForm (forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+        if password1 != password2:
+            raise forms.ValidationError("As senhas não coincidem.")
+        return password2
 
 # Dados Adicionados via Shell (CRUD) (comando: python manage.py shell)
 # Comandos e comentários do desenvolvedor. 

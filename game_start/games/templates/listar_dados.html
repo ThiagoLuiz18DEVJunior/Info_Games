@@ -4,14 +4,20 @@
 
 <body>
   <h1>Campo de Dados</h1>
-    <h2> {{ nome_tabela }} </h2>
-  <ul>
+    <h2 class="mb-4"> {{ nome_tabela }} </h2>
+  <ul class="list-group">
       {% for item_data in items_with_fields %}
-          <li>
+          <li class="bg-secondary list-group-item d-flex justify-content-between alig-item-center mb-4">
               <ul>
+              <div>
                   {% for field, value in item_data.items %}
+                  <div>
                      <li><strong>{{ field }}: </strong>{{ value }}</li>
+                  </div>
                   {% endfor %}
+                  <a class="mt-3 btn btn-sm btn-warning" href="{% url 'atualizar_jogos' item_data.id %}">Editar</a>
+                  <a class="mt-3 btn btn-sm btn-danger"href="{% url 'excluir_jogos' item_data.id %}" onclick="return confirm('Tem certeza que deseja excluir este jogo?');">Excluir</a>
+              </div>
               </ul>
               <br/>
           </li>

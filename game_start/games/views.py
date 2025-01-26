@@ -1,134 +1,21 @@
 from django.shortcuts import *
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from .user_view import * # Criando Views Correlatas com Usuários
+from .auto_view import * # Criando Imports das Views Automatizadas
 from .models import Game, Enterprise, Publisher, Dev
 from .forms import GameForm, EnterpriseForm, DevForm, PublisherForm
+from django.contrib.auth.decorators import login_required
+
+
 
 # Create your views here.
+# Função de Home Page
+
+def home_page(request):
+    return render(request, 'base.html')
 
 # Funções  para acessar o BD e manipular os dados
 
-def listar_dados(request):
-
-    entity = request.GET.get('entity', 'games') 
-    items_with_fields = []
-    name_tbl = 'Game'
-    
-
-# Criando a Lista de Jogos:
-    if entity == 'games':
-        name_tbl = 'JOGOS'
-        field_mapping = {
-        'game_star': 'Avaliação',
-        'title_game': 'Titulo do Jogo',
-        'year_game': 'Ano de Lançamento',
-        'devs_game': 'Desenvolvedores',
-        'enterprise_game': 'Empresa',
-        'publisher_game': 'Distribuidora',
-        }
-
-        items = Game.objects.all()
-        item_pk = Game.objects.first()
-        fields = [field.name for field in Game._meta.get_fields()]  
-
-        for item in items:
-            item_data = {}
-            for field in Game._meta.get_fields():
-                if field.concrete:
-                    field_name = field.name
-                    field_value = getattr(item, field_name)
-                    if field_name in field_mapping:
-                        item_data[field_mapping[field_name]] = field_value
-                    else:
-                        item_data[field_name] = field_value
-            items_with_fields.append(item_data)
-
-# Criando a Lista de Empresas:
-    elif entity == 'enterprise':
-        name_tbl = 'EMPRESAS'
-        field_mapping = {
-         'enterprise_name': 'Nome da Empresa',
-         'enterprise_year': 'Ano de Criação',
-        }
-
-        items = Enterprise.objects.all()
-        item_pk = Enterprise.objects.first()
-        fields = [field.name for field in Enterprise._meta.get_fields()]  
-        for item in items:
-            item_data = {}
-            for field in Enterprise._meta.get_fields():
-                if field.concrete:
-                    field_name = field.name
-                    field_value = getattr(item, field_name)
-                    if field_name in field_mapping:
-                        item_data[field_mapping[field_name]] = field_value
-                    else:
-                        item_data[field_name] = field_value
-
-            items_with_fields.append(item_data)
-
-# Criando a Lista de Desenvolvedores:
-    elif entity == 'dev':
-        name_tbl = 'DESENVOLVEDORES'
-        field_mapping = {
-        'dev_name': 'Nome',
-        'dev_last_name': 'Sobrenome',
-        'dev_nickname':'Apelido',
-        'dev_years': 'Idade',
-        'enterprises': 'Empresas que Atuou',
-        }
-
-        items = Dev.objects.all()
-        item_pk = Dev.objects.first()
-        fields = [field.name for field in Dev._meta.get_fields()]  
-        for item in items:
-            item_data = {}
-            for field in Dev._meta.get_fields():
-                if field.concrete:
-                    field_name = field.name
-                    field_value = getattr(item, field_name)
-                    if field_name in field_mapping:
-                        item_data[field_mapping[field_name]] = field_value
-                    else:
-                        item_data[field_name] = field_value
-
-            items_with_fields.append(item_data)
-            
-# Criando a Lista de Publishers:
-    elif entity == 'publisher':
-        name_tbl = 'PUBLISHERS'
-        field_mapping = {
-        'publisher_name': 'Nome',
-        'publisher_year': 'Ano de Criação',
-        'enterprise_pub': 'Direitos de Distribuição'
-        }
-
-        items = Publisher.objects.all()
-        item_pk = Publisher.objects.first()
-        fields = [field.name for field in Publisher._meta.get_fields()]  
-        for item in items:
-            item_data = {}
-            for field in Publisher._meta.get_fields():
-                if field.concrete:
-                    field_name = field.name
-                    field_value = getattr(item, field_name)
-                    if field_name in field_mapping:
-                        item_data[field_mapping[field_name]] = field_value
-                    else:
-                        item_data[field_name] = field_value
-
-            items_with_fields.append(item_data)
-    else:
-        items = Game.objects.all()  # Deixei o padrão para jogos, mas pode ser alterado.
-
-    return render(request, 'listar_dados.html', {
-        'items': items, 
-        'entity': entity,
-        'fields': fields, 
-        'items_with_fields': items_with_fields,
-        'nome_tabela': name_tbl,
-        'item_pk': item_pk,
-        })
-
+@login_required
 def add_jogos (request):
     if request.method == 'POST':
      form = GameForm(request.POST)
@@ -139,7 +26,7 @@ def add_jogos (request):
         form = GameForm()
     return render (request, 'add_jogos.html', {'form': form})
 
-
+@login_required
 def atualizar_jogos(request, pk):
     games = get_object_or_404(Game, pk=pk)
     if request.method == 'POST':
@@ -151,7 +38,7 @@ def atualizar_jogos(request, pk):
         form = GameForm(instance=games)
         return render(request, 'atualizar_jogos.html', {'form': form, 'games': games})
 
-
+@login_required
 def detalhar_jogos (request, pk):
     var_key1 = True
     var_key2 = False
@@ -161,6 +48,7 @@ def detalhar_jogos (request, pk):
     games = get_object_or_404(Game, pk=pk)
     return render(request, 'detalhes_jogos.html', {'games': games, 'var_keys': var_keys})
 
+@login_required
 def excluir_jogos(request, pk):
     games = get_object_or_404(Game, pk=pk)
     if request.method in ['POST', 'GET']:
@@ -169,6 +57,7 @@ def excluir_jogos(request, pk):
 
 # Funções para acessar o BD das Empresas
 
+@login_required
 def listar_emp(request):
     var_key1 = False
     var_key2 = True
@@ -178,6 +67,7 @@ def listar_emp(request):
     emp = Enterprise.objects.all() 
     return render(request, 'listar_dados.html', {'empresa': emp, 'var_keys': var_keys})
 
+@login_required
 def add_emp (request):
     name_tbl = "Empresa"
     if request.method == 'POST':
@@ -189,6 +79,7 @@ def add_emp (request):
         form = EnterpriseForm()
     return render (request, 'add_jogos.html', {'form': form, 'nome_tabela': name_tbl})
 
+@login_required
 def atualizar_emp(request, pk):
     emp = get_object_or_404(Enterprise, pk=pk)
     if request.method == 'POST':
@@ -200,6 +91,7 @@ def atualizar_emp(request, pk):
         form = EnterpriseForm(instance=emp)
         return render(request, 'atualizar_jogos.html', {'form': form, 'empresa': emp})
 
+@login_required
 def detalhar_emp (request, pk):
     var_key1 = False
     var_key2 = True
@@ -209,6 +101,7 @@ def detalhar_emp (request, pk):
     emp = get_object_or_404(Enterprise, pk=pk)
     return render(request, 'detalhes_jogos.html', {'empresa': emp, 'var_keys': var_keys})
 
+@login_required
 def excluir_emp (request, pk):
     emp = get_object_or_404(Enterprise, pk=pk)
     if request.method in ['POST', 'GET']:
@@ -217,6 +110,7 @@ def excluir_emp (request, pk):
 
 
 # Funções para acessar o BD das Publisher
+@login_required
 def listar_pub(request):
     var_key1 = False
     var_key2 = False
@@ -226,6 +120,7 @@ def listar_pub(request):
     pub = Publisher.objects.all() 
     return render(request, 'listar_dados.html', {'publishers': pub, 'var_keys': var_keys})
 
+@login_required
 def add_pub (request):
     if request.method == 'POST':
      form = PublisherForm(request.POST)
@@ -236,6 +131,7 @@ def add_pub (request):
         form = PublisherForm()
     return render (request, 'add_jogos.html', {'form': form})
 
+@login_required
 def atualizar_pub(request, pk):
     pub = get_object_or_404(Publisher, pk=pk)
     if request.method == 'POST':
@@ -246,7 +142,8 @@ def atualizar_pub(request, pk):
     else:
         form = PublisherForm(instance=pub)
         return render(request, 'atualizar_jogos.html', {'form': form, 'publisher': pub})
-
+    
+@login_required
 def detalhar_pub (request, pk):
     var_key1 = False
     var_key2 = False
@@ -256,6 +153,7 @@ def detalhar_pub (request, pk):
     pub = get_object_or_404(Publisher, pk=pk)
     return render(request, 'detalhes_jogos.html', {'publisher': pub, 'var_keys': var_keys})
 
+@login_required
 def excluir_pub (request, pk):
     pub = get_object_or_404(Publisher, pk=pk)
     if request.method in ['POST', 'GET']:
@@ -264,6 +162,7 @@ def excluir_pub (request, pk):
 
 
 # Funções para acessar o BD das Desenvolvedores
+@login_required
 def listar_devs(request):
     var_key1 = False
     var_key2 = False
@@ -273,6 +172,7 @@ def listar_devs(request):
     devs = Dev.objects.all() 
     return render(request, 'listar_dados.html', {'devs': devs, 'var_keys': var_keys})
 
+@login_required
 def add_dev (request):
     if request.method == 'POST':
      form = DevForm(request.POST)
@@ -283,6 +183,7 @@ def add_dev (request):
         form = DevForm()
     return render (request, 'add_jogos.html', {'form': form})
 
+@login_required
 def atualizar_dev(request, pk):
     dev = get_object_or_404(Dev, pk=pk)
     if request.method == 'POST':
@@ -294,6 +195,7 @@ def atualizar_dev(request, pk):
         form = DevForm(instance=dev)
         return render(request, 'atualizar_jogos.html', {'form': form, 'devs': dev})
 
+@login_required
 def detalhar_dev (request, pk):
     var_key1 = False
     var_key2 = False
@@ -303,6 +205,7 @@ def detalhar_dev (request, pk):
     dev = get_object_or_404(Dev, pk=pk)
     return render(request, 'detalhes_jogos.html', {'devs': dev, 'var_keys': var_keys})
 
+@login_required
 def excluir_dev (request, pk):
     dev = get_object_or_404(Dev, pk=pk)
     if request.method in ['POST', 'GET']:

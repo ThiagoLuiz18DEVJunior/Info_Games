@@ -14,6 +14,10 @@ class GameForm(forms.ModelForm):
       'publisher_game',
     ]
 
+    widgets = {
+    'devs_game' : forms.Select(attrs={'class': 'form-control'}),
+    }
+
 class EnterpriseForm(forms.ModelForm):
  class Meta:
     model = Enterprise
@@ -40,4 +44,11 @@ class PublisherForm(forms.ModelForm):
       'publisher_name',
       'publisher_year',
       'enterprise_pub',
+    ]
+  
+class UserForm(forms.ModelForm):
+  class Meta:
+    fields = [
+      'password',
+      'password2',
     ]
