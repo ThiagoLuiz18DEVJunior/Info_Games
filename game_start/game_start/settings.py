@@ -126,3 +126,11 @@ STATICFILES_DIRS = [BASE_DIR / "games/static"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
+
+import os
+
+# Diretório onde os arquivos de mídia serão armazenados
+MEDIA_ROOT = os.path.join(BASE_DIR, "games/media")
+
+# URL que o Django usará para servir arquivos de mídia
+MEDIA_URL = '/media/'

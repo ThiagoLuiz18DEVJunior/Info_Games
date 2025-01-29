@@ -1,6 +1,5 @@
 from django.shortcuts import *
 from .views import *
-from .auto_view import *
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -13,7 +12,7 @@ def login_info_games (request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/list/?entity=games')
+            return redirect('/listar/?model=games')
         else:
             messages.error(request, 'Usuário ou Senha Incorretos.')
             return render(request, 'login.html')

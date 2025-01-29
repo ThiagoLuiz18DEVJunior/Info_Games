@@ -1,31 +1,46 @@
 {% extends 'base.html' %}
-{% block title %}Lista de Games{% endblock %}
-{% block content %}
 
+{% block title %}Lista de Games{% endblock %}
+
+{% block content %}
 <body>
-  <h1>Campo de Dados</h1>
-    <h2 class="mb-4"> {{ nome_tabela }} </h2>
-  <ul class="list-group">
+  <div class="container mt-5">
+    <h1 class="press-start-font fs-4">Campo de Dados</h1>
+    <h2 class="mb-4">{{ nome_tabela }}</h2>
+
+    <div class="row">
+      <!-- Loop para exibir cada item com os seus campos -->
       {% for item_data in items_with_fields %}
-          <li class="bg-secondary list-group-item d-flex justify-content-between alig-item-center mb-4">
-              <ul>
-              <div>
-                  {% for field, value in item_data.items %}
-                  <div>
-                     <li><strong>{{ field }}: </strong>{{ value }}</li>
+        <div class="col-md-4 mb-4">
+          <div class="card custom-shadow">
+            <div class="card-body">
+              <h5 class="card-title">{{ item_data.title_game }}</h5>
+              <ul class="list-group">
+                {% for field, value in item_data.items %}
+                  {% if forloop.counter <= 5 %}
+                    {% if field != "id" %}
+                      <li class="list-group-item">
+                        <strong>{{ field }}:</strong> {{ value }}
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+                {% if user.is_authenticated %}
+                  <div class="d-flex justify-content-between">
+                    <a class="mt-3 btn btn-warning btn-sm" href="{% url 'atualizar' model=model_choice  pk=item_data.id %}">Editar</a>
+                    <a class="mt-3 btn btn-sm btn-danger" href="{% url 'excluir_jogos' item_data.id %}" onclick="return confirm('Tem certeza que deseja excluir este jogo?');">Excluir</a>
                   </div>
-                  {% endfor %}
-                  <a class="mt-3 btn btn-sm btn-warning" href="{% url 'atualizar_jogos' item_data.id %}">Editar</a>
-                  <a class="mt-3 btn btn-sm btn-danger"href="{% url 'excluir_jogos' item_data.id %}" onclick="return confirm('Tem certeza que deseja excluir este jogo?');">Excluir</a>
-              </div>
+                  {% else %}
+                  {% endif %}
+              
               </ul>
-              <br/>
-          </li>
+            </div>
+          </div>
+        </div>
       {% endfor %}
-  </ul>
+    </div>
+  </div>
 </body>
 {% endblock %}
-
-
 
 

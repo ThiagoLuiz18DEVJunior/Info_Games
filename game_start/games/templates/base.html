@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} GERENCIADOR DE JOGOS {% endblock %}</title>
     {% load static %}
-    <link href="{%static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{%static 'css/bootstrap.min.css' %}" rel="stylesheet">  
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jacquard+12&family=Noto+Sans:wght@400;700&family=Poppins:wght@100;200;300;400;500&family=Press+Start+2P&family=Roboto&family=Roboto+Slab&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap');
+
+        .press-start-font {
+        font-family: "Press Start 2P", serif;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 300;
+        }
+
+        .custom-shadow {
+        box-shadow: 4px 4px 4px rgba(255, 255, 255, 0.5); 
+        }
+        
         .nav-item:hover .dropdown-menu {
             display: block;
         }
@@ -14,47 +27,58 @@
             background-color: #0d6efd;
             color: white;
         }
+        .bg-custom-dark {
+            background-color: #212121;
+        }
+
+        .text-custom-dark {
+            color: #212121;
+        }
+        .text-white-custom {
+            color: #ffffff;
+        }
+
+        .text-yellow {
+            color: #FFEB3B;
+        }
+        
     </style>
 </head>
-<body class="bg-secondary">
-    <header class="bg-dark text-white p-3">
+<body class="bg-secondary press-start-font min-vh-100 pb-5">
+    <header class="bg-custom-dark text-white fw-bold p-3">
         <div class="container">
-            <h1>  <a href="{% url 'home' %}" class="text-white text-decoration-none"> Gerenciador de Dados </a>  </h1>
+            <h1>  <a href="{% url 'home' %}" class="text-yellow text-decoration-none fs-2"> Gerenciador de Jogos </a>  </h1>
             <nav class="nav d-flex">
                 <div class="nav-item dropdown">
-                        <a href="/list/?entity=games" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs" data-bs-toggle="dropdown" aria-expanded="false">JOGOS</a>
+                        <a href="/listar/?model=games" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs" data-bs-toggle="dropdown" aria-expanded="false">JOGOS</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownPubs">
-                            <a href="/list/?entity=games" class="dropdown-item">Listar Jogos</a>
-                            <a href="{% url 'adicionar_jogos' %}" class="dropdown-item">Adicionar Jogo</a>
-                            <a href="{% url 'atualizar_jogos' 2 %}" class="dropdown-item">Editar Jogo</a>
-                            <a href="{% url 'detalhar_jogos' 2 %}" class="dropdown-item">Detalhar Jogo</a>
+                            <a href="/listar/?model=games" class=" press-start-font dropdown-item">Listar Jogos</a>
+                            <a href="/adicionar/?model=games" class=" press-start-font dropdown-item">Adicionar Jogo</a>
+                            <a href="/detalhar/?model=games" class=" press-start-font dropdown-item">Detalhar Jogos</a>
                         </ul>
                 </div>
                 <div class="nav-item dropdown">
-                        <a href="/list/?entity=dev" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs"  data-bs-toggle="dropdown" aria-expanded="false">DESENVOLVEDORES</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownPubs">
-                            <a href="/list/?entity=dev" class="dropdown-item">Listar Devs</a>
-                            <a href="{% url 'adicionar_dev'  %}" class="dropdown-item">Adicionar Dev</a>
-                            <a href="{% url 'atualizar_dev' 1 %}" class="dropdown-item">Editar Dev</a>
-                            <a href="{% url 'detalhar_dev' 1 %}" class="dropdown-item">Detalhar Dev</a>
+                        <a href="/listar/?model=dev" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs"  data-bs-toggle=" press-start-font dropdown" aria-expanded="false">DESENVOLVEDORES</a>
+                        <ul class=" press-start-font dropdown-menu" aria-labelledby="navbarDropdownPubs">
+                            <a href="/listar/?model=dev" class=" press-start-font dropdown-item">Listar Devs</a>
+                            <a href="/adicionar/?model=dev" class=" press-start-font dropdown-item">Adicionar Dev</a>
+                            <a href="/detalhar/?model=dev" class=" press-start-font dropdown-item">Detalhar Devs</a>
                         </ul>
                 </div>
                 <div class="nav-item dropdown">
-                    <a  href="/list/?entity=enterprise" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs"  data-bs-toggle="dropdown" aria-expanded="false" class="text-white">EMPRESAS</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownPubs">
-                        <a href="/list/?entity=enterprise" class="dropdown-item">Listar Empresas</a>
-                        <a href="{% url 'adicionar_empresas' %}" class="dropdown-item">Adicionar Empresa</a>
-                        <a href="{% url 'atualizar_empresas' 1 %}" class="dropdown-item">Editar Empresa</a>
-                        <a href="{% url 'detalhar_empresas' 1 %}" class="dropdown-item">Detalhar Empresa</a>
+                    <a  href="/listar/?model=enterprise" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs"  data-bs-toggle=" press-start-font dropdown" aria-expanded="false" class="text-white">EMPRESAS</a>
+                    <ul class=" press-start-font dropdown-menu" aria-labelledby="navbarDropdownPubs">
+                        <a href="/listar/?model=enterprise" class=" press-start-font dropdown-item">Listar Empresas</a>
+                        <a href="/adicionar/?model=enterprise" class=" press-start-font dropdown-item">Adicionar Empresa</a>
+                        <a href="/detalhar/?model=enterprise" class=" press-start-font dropdown-item">Detalhar Empresas</a>
                     </ul>
                 </div>
                 <div class="nav-item dropdown">
-                    <a href="/list/?entity=publisher" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs"  data-bs-toggle="dropdown" aria-expanded="false" class="text-white">PUBLISHERS</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownPubs">
-                        <a href="/list/?entity=publisher"  class="dropdown-item">Listar Distribuidoras</a>
-                        <a href="{% url 'adicionar_publisher' %}" class="dropdown-item">Adicionar Distribuidora</a>
-                        <a href="{% url 'atualizar_publisher' 2 %}" class="dropdown-item">Editar Distribuidora</a>
-                        <a href="{% url 'detalhar_publisher' 2 %}" class="dropdown-item">Detalhar Distribuidora</a>
+                    <a href="/listar/?model=publisher" class="nav-link dropdown-toggle text-white" d="navbarDropdownPubs"  data-bs-toggle=" press-start-font dropdown" aria-expanded="false" class="text-white">PUBLISHERS</a>
+                    <ul class=" press-start-font dropdown-menu" aria-labelledby="navbarDropdownPubs">
+                        <a href="/listar/?model=publisher"  class=" press-start-font dropdown-item">Listar Distribuidoras</a>
+                        <a href="/adicionar/?model=publisher" class=" press-start-font dropdown-item">Adicionar Distribuidora</a>
+                        <a href="/detalhar/?model=publisher" class=" press-start-font dropdown-item">Detalhar Distribuidoras</a>
                     </ul>
                 </div>
                 {% if user.is_authenticated %}
@@ -72,7 +96,7 @@
     </main>
 
     <footer class="bg-dark text-white text-center p-2 mt-2 fixed-bottom">
-    <p> &copy; 2024 GERENCIADOR DE JOGOS -  Desenvolvido por Thiago Luiz  </p>
+        <p> &copy; 2024 GERENCIADOR DE JOGOS -  Desenvolvido por Thiago Luiz  </p>
     </footer>
    
     <script src="{% static 'js/bootstrap.min.js' %}"></script>

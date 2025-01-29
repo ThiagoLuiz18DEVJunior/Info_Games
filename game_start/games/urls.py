@@ -1,38 +1,19 @@
 from django.urls import path
 from .views import *
 from .user_view import *
-from .auto_view import *
-from . import views
 
 
 urlpatterns = [
    path('', home_page, name='home'),
    path('register/', register, name='register'),
-   path('list/', listar_dados, name="listar_dados"), 
    path('login/', login_info_games, name='login'),
    path('logout/', logout_info_games, name='logout'),
-
-   # Path pra config de DB da Empresa
-   path('empresa/adicionar/', add_emp , name='adicionar_empresas'), 
-   path('empresa/editar/<int:pk>/', atualizar_emp, name='atualizar_empresas'), 
-   path('empresa/detalhar/<int:pk>/', detalhar_emp, name='detalhar_empresas'), 
+   path('listar/', DataList.as_view(), name='listar'),
+   path('detalhar/', DataListDetails.as_view(), name='detalhar'),
+   path('adicionar/', DataAdd.as_view(), name='adicionar'),
+   path('atualizar/<str:model>/<int:pk>/', DataAtt.as_view(), name='atualizar'),
    path('empresa/excluir/<int:pk>/', excluir_emp, name='excluir_empresas'), 
-
-   # Path pra config dos Desenvolvedores
-   path('dev/adicionar/', views.add_dev , name='adicionar_dev'), 
-   path('dev/editar/<int:pk>/', atualizar_dev, name='atualizar_dev'), 
-   path('dev/detalhar/<int:pk>/', detalhar_dev, name='detalhar_dev'), 
    path('dev/excluir/<int:pk>/', excluir_dev, name='excluir_dev'), 
-
-   # Path pra config das Publisher
-   path('publisher/adicionar/', add_pub , name='adicionar_publisher'), 
-   path('publisher/editar/<int:pk>/', atualizar_pub, name='atualizar_publisher'), 
-   path('publisher/detalhar/<int:pk>/', detalhar_pub, name='detalhar_publisher'), 
    path('publisher/excluir/<int:pk>/', excluir_pub, name='excluir_publisher'), 
-
-   # Path pra config de DB dos Jogos 
-   path('games/adicionar/', add_jogos , name='adicionar_jogos'), 
-   path('games/editar/<int:pk>/', atualizar_jogos, name='atualizar_jogos'), 
-   path('games/detalhar/<int:pk>/', detalhar_jogos, name='detalhar_jogos'), 
    path('games/excluir/<int:pk>/', excluir_jogos, name='excluir_jogos'), 
 ]
