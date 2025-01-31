@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime
 from django.forms import ValidationError
-from django import forms
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -11,6 +10,10 @@ from django.contrib.auth.models import User
 class Enterprise (models.Model):
     enterprise_name = models.CharField(max_length=30)
     enterprise_year = models.PositiveIntegerField()
+
+    def clean(self):
+        if len(self.enterprise_name) > 30:
+            raise ValidationError({'enterprise_name': 'O nome da empresa não pode ter mais de 30 caracteres.'})
 
     def __str__(self):
       return f"{self.enterprise_name} ({self.enterprise_year})"
@@ -32,6 +35,7 @@ class Dev (models.Model):
 
     def __str__(self):
       return f"{self.dev_name} {self.dev_last_name} ({self.dev_nickname})"
+
 
 class Game (models.Model): 
 
@@ -62,18 +66,11 @@ class Game (models.Model):
     def get_stars(self):
         return '★' * self.game_star + '☆' * (5 - self.game_star)
 
-class UserForm (forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    password2 = forms.CharField(widget=forms.PasswordInput)
+class UserProfile(models.Model):
+    user_name = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_bio = models.TextField(blank=True, null=True)
+    user_birth_date = models.DateField(null=True, blank=True)
 
-    class Meta:
-        model = User
-        fields = ['username', 'email']
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password')
-        password2 = self.cleaned_data.get('password2')
-        if password1 != password2:
-            raise forms.ValidationError("As senhas não coincidem.")
-        return password2
+    def __str__(self):
+        return self.user.username
 

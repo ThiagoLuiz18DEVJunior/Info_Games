@@ -62,7 +62,7 @@ class DataListDetails(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         model_choice = self.request.GET.get('model', 'game')  
-  
+
         if model_choice == 'game':
             model = Game
             form_class = GameForm
@@ -87,15 +87,22 @@ class DataListDetails(TemplateView):
         for item in items:
             item_data = {}
             for field in model._meta.get_fields():
-                if field.concrete:  
+                if field.concrete:
                     field_name = field.name
                     field_value = getattr(item, field_name)
+                    
+                    if field.many_to_many:
+                        field_value = list(field_value.all()) 
+                        field_value = [str(val) for val in field_value]
+                    
                     if field_name in field_label:
                         item_data[field_label[field_name]] = field_value
                     else:
                         item_data[field_name] = field_value
+
             items_with_fields.append(item_data)
 
+        # Passa as informações para o contexto
         context['items_with_fields'] = items_with_fields
         context['model_choice'] = model_choice
         return context

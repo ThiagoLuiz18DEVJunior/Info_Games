@@ -27,18 +27,37 @@ def logout_info_games (request):
 
 # views.py
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import UserForm
+from django.contrib.auth.models import User
+
+# Função de registro de usuário
 def register(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
+            user.set_password(form.cleaned_data['password']) 
+            user.save()  
             messages.success(request, "Conta criada com sucesso! Você pode agora fazer login.")
-            return redirect('login')  # Redireciona para a página de login
+            return redirect('login') 
     else:
         form = UserForm()
 
     return render(request, 'register.html', {'form': form})
 
 
+@login_required
+def profile(request):
+    user = request.user 
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)  
+        if form.is_valid():
+            form.save() 
+            messages.success(request, "Perfil atualizado com sucesso!")
+            return redirect('profile')  
+    else:
+        form = UserForm(instance=user)  
+
+    return render(request, 'profile.html', {'form': form, 'user': user})

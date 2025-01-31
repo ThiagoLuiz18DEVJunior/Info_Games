@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil do Usuário{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-header">
+        <h3>Perfil de {{ user.username }}</h3>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <p><strong>Nome de Usuário:</strong> {{ user.username }}</p>
+        </div>
+        <div class="mb-3">
+          <p><strong>E-mail:</strong> {{ user.email }}</p>
+        </div>
+        <hr>
+        <h4>Alterar Informações</h4>
+        <form method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary mt-3">Salvar Alterações</button>
+        </form>
+      </div>
+    </div>
+    <a href="{% url 'listar' %}" class="btn btn-secondary">Voltar para a lista de jogos</a>
+  </div>
+{% endblock %}

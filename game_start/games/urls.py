@@ -8,6 +8,7 @@ urlpatterns = [
    path('register/', register, name='register'),
    path('login/', login_info_games, name='login'),
    path('logout/', logout_info_games, name='logout'),
+   path('profile/', profile, name='profile'),
    path('listar/', DataList.as_view(), name='listar'),
    path('detalhar/', DataListDetails.as_view(), name='detalhar'),
    path('adicionar/', DataAdd.as_view(), name='adicionar'),
